@@ -1,0 +1,29 @@
+<div class="af-login-page">
+  <div class="af-particles-container">
+    <particles [style]="myStyle" [width]="width" [height]="height" [params]="myParams"></particles>
+  </div>
+  <div class="af-login-content">
+    <div class="card af-login-card">
+      <div class="card-header">
+        请登录仓库管理系统
+      </div>
+      <div class="card-body">
+        <div class="input-group af-login-row">
+          <div class="input-group-prepend">
+            <span class="input-group-text fas fa-user text-primary"></span>
+          </div>
+          <input [(ngModel)]="userId" type="text" class="form-control" placeholder="请输入账号...">
+        </div>
+        <div class="input-group af-login-row">
+          <div class="input-group-prepend">
+            <span class="input-group-text fas fa-lock text-primary"></span>
+          </div>
+          <input [(ngModel)]="password" type="password" class="form-control" placeholder="请输入密码...">
+        </div>
+        <div class="af-login-row">
+          <button class="btn btn-success btn-lg btn-block" [disabled]="!userId || !password" (click)="login()">登录</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

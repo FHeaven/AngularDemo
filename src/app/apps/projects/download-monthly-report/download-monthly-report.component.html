@@ -1,0 +1,25 @@
+<div class="af-page-content">
+  <div class="content">
+    <app-av-typeahead [compConfig]="UICtrlInfo.typeaheadConfig"></app-av-typeahead>
+    <div class="button-group">
+      <button type="button" class="btn btn-info btn-lg" [disabled]="!UICtrlInfo.selectedReportMonth"
+        (click)="onDownloadMonthlyStoreIn()">
+        <span class="fas fa-file-download"></span>
+        仓库物资入库情况月报表
+      </button>
+      <button type="button" class="btn btn-success btn-lg" [disabled]="!UICtrlInfo.selectedReportMonth"
+        (click)="onDownloadMonthlyStoreOut()">
+        <span class="fas fa-file-download"></span>
+        仓库物资领用情况月报表
+      </button>
+      <button type="button" class="btn btn-primary btn-lg" [disabled]="!UICtrlInfo.selectedReportMonth"
+        (click)="onDownloadMonthlyStoreInOut()">
+        <span class="fas fa-file-download"></span>
+        仓库材料月报表
+      </button>
+    </div>
+    <a class="downloadReportUrl" [attr.href]="UICtrlInfo.downloadUrl" target="_self">
+      <span id="downloadReport"></span>
+    </a>
+  </div>
+</div>

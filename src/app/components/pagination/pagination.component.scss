@@ -1,0 +1,42 @@
+:host {
+  display: inline-block;
+  color: #37474F;
+  font-size: 16px;
+}
+
+.div-inline-block {
+  display: inline-block;
+}
+
+.input-paging {
+  display: inline;
+  width: 50px;
+  text-align: center;
+  padding: 2px 5px;
+  height: 32px;
+}
+
+.av-pagination-page-arrow {
+  cursor: pointer;
+}
+
+.av-pagination-page-arrow.disabled {
+  cursor: not-allowed;
+}
+
+.av-pagination-page-arrow>img {
+  width: 6px;
+}
+
+.av-pagination-page-arrow.left {
+  margin-right: 10px;
+}
+
+.av-pagination-page-arrow.right {
+  margin-left: 10px;
+}
+
+.num-text {
+    background-color: #d3d4da;
+    padding: 0 8px;
+}

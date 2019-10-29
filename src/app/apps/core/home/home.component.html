@@ -1,0 +1,7 @@
+<div class="af-page-content">
+  <div class="page-card-contianer">
+    <ng-container *ngFor="let item of pageCardList">
+      <app-page-card [funName]="item.menuName" [className]="item.icons" [url]="item.url"></app-page-card>
+    </ng-container>
+  </div>
+</div>

@@ -1,0 +1,14 @@
+<div [id]="tahCompWebInfo.id" class="typeahead-comp-container">
+  <div class="typeahead-container">
+    <input [id]="tahCompWebInfo.inputId" type="text" class="form-control" style="width: 100%;" [placeholder]="tahCompWebInfo.inputPlaceHolder"
+      [(ngModel)]="tahCompWebInfo.inputValue" (ngModelChange)="onInputChanged()" (focus)="onInputFocus()" (blur)="onInputBlur()" [readonly]="!tahCompWebInfo.isEnable">
+  </div>
+  <div *ngIf="tahCompWebInfo.isEnable" [hidden]="!tahCompWebInfo.isShowDropdown" class="dropdown-select-container">
+    <ul>
+      <li *ngFor="let dsItem of tahCompWebInfo.displayDataSource | avLimitTo: 100" (mouseover)="onDropdownItemMouseOver(dsItem)"
+        [class.onFocus]="dsItem.isFocus" (click)="onSelect()">
+        <span [innerHtml]="dsItem.htmlValue"></span>
+      </li>
+    </ul>
+  </div>
+</div>

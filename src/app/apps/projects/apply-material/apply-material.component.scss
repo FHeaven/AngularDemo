@@ -1,0 +1,54 @@
+.af-page-content {
+
+  .card-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .table-container {
+    margin-top: 0px;
+  }
+
+  .operate-area-container {
+    margin: 20px 10px;
+    display: flex;
+    display: -webkit-flex;
+    justify-content: space-between;
+
+    .op-column-item {
+      width: 28%;
+      text-align: left;
+
+      .label {
+        font-weight: 500;
+      }
+    }
+  }
+
+  .operation-td {
+    display: flex;
+    justify-content: center;
+
+    span {
+      cursor: pointer;
+      font-size: 18px;
+    }
+  }
+
+  .fa-times {
+    margin-left: 10px;
+  }
+
+  .query-item {
+    display: flex;
+    align-items: center;
+    margin-right: 20px;
+    width: 280px;
+
+    div {
+      width: 200px;
+    }
+  }
+
+}

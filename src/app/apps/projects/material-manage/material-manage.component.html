@@ -1,0 +1,118 @@
+<div class="af-page-content">
+
+  <div class="input-group">
+    <input type="text" class="form-control" [(ngModel)]="inputQuery" placeholder="输入查询条件">
+    <div class="input-group-append">
+      <button class="btn btn-outline-secondary" type="button" (click)="queryMaterial()">
+        <span class="fas fa-search"></span>
+        查询
+      </button>
+    </div>
+    <div class="input-group-append">
+      <button class="btn btn-outline-secondary btn-primary" (click)="addNewMaterial()" type="button">
+        <span class="fas fa-plus"></span>
+        添加物料
+      </button>
+    </div>
+  </div>
+
+  <div *ngIf="isCreating || isUpdating" class="operation-container">
+    <div class="card text-center">
+      <div class="card-header text-left">
+        <h5 *ngIf="isCreating">新增物料</h5>
+        <h5 *else> 修改物料</h5>
+      </div>
+      <div class="card-body">
+        <div class="operate-area-container">
+          <div class="op-column-item">
+            <label>
+              物料编号 <span class="text-danger">*</span>
+            </label>
+            <div>
+              <input type="text" [readonly]="isUpdating" [(ngModel)]="opMaterialInfo.material_id" class="form-control"
+                placeholder="请输入物料编号">
+            </div>
+          </div>
+          <div class="op-column-item">
+            <label>
+              物料名称 <span class="text-danger">*</span>
+            </label>
+            <div>
+              <input type="text" [(ngModel)]="opMaterialInfo.material" class="form-control" placeholder="请输入物料名称">
+            </div>
+          </div>
+          <div class="op-column-item">
+            <label>
+              库存单位 <span class="text-danger">*</span>
+            </label>
+            <div>
+              <input type="text" [(ngModel)]="opMaterialInfo.unit" class="form-control" placeholder="请输入库存单位">
+            </div>
+          </div>
+          <div class="op-column-item">
+            <label>
+              单价（元） <span class="text-danger">*</span>
+            </label>
+            <div>
+              <input type="text" [(ngModel)]="opMaterialInfo.unit_price" class="form-control" placeholder="请输入单价" [class.error-unit-price]="isErrorUnitPrice">
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="card-footer text-right">
+        <div class="text-danger">
+          {{errorMessage}}
+        </div>
+        <div>
+          <button type="button" class="btn btn-info" [disabled]="!opMaterialInfo.material_id || !opMaterialInfo.material || !opMaterialInfo.unit || opMaterialInfo.unit_price === null || opMaterialInfo.unit_price === undefined || opMaterialInfo.unit_price === ''"
+            (click)="saveMaterial()">
+            <span class="fas fa-check"></span>
+            保存
+          </button>
+          <button type="button" class="btn btn-secondary" (click)="cancel()">
+            <span class="fas fa-times"></span>
+            取消
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="isShowing" [hidden]="isCreating || isUpdating" class="table-container">
+    <table class="common-table">
+      <thead>
+        <tr>
+          <th style="min-width: 120px;">物料编号</th>
+          <th style="min-width: 120px;">物料名称</th>
+          <th style="min-width: 100px;">库存单位</th>
+          <th style="min-width: 80px;">单价（元）</th>
+          <th style="width: 160px;">创建时间</th>
+          <th style="width: 120px;">创建者</th>
+          <th style="width: 160px;">修改时间</th>
+          <th style="width: 120px;">修改者</th>
+          <th style="width:75px;">操作</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let materialInfo of lstDisplayMaterialInfo">
+          <td>{{materialInfo.material_id}}</td>
+          <td>{{materialInfo.material}}</td>
+          <td>{{materialInfo.unit}}</td>
+          <td>{{materialInfo.unit_price | avNumberString}}</td>
+          <td>{{materialInfo.create_date_time}}</td>
+          <td>{{materialInfo.created_by}}</td>
+          <td>{{materialInfo.update_date_time}}</td>
+          <td>{{materialInfo.updated_by}}</td>
+          <td>
+            <div class="operation-td">
+              <span class="fas fa-edit text-info" title="修改" (click)="updateMaterial(materialInfo)"></span>
+              <span class="fas fa-times text-danger" title="删除" (click)="deleteMaterial(materialInfo)"></span>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <app-pagination [itemsPerPage]="pagingObj.itemsPerPage" [totalItems]="pagingObj.totalItems" [(currentPageIndex)]="pagingObj.currentPageIndex"
+      (pageChange)="pagingObj.onPageChange($event)"></app-pagination>
+  </div>
+</div>

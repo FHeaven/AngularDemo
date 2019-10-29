@@ -1,0 +1,28 @@
+.af-page-card-container {
+  width: 200px;
+  border: 2px solid #546e95;
+  padding: 8px;
+  cursor: pointer;
+  border-radius: 4px;
+  margin: 8px;
+
+  .icon-container {
+    font-size: 100px;
+    color: #546e95;
+    height: 150px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .function-name {
+    color: #546e95;
+    text-align: center;
+    margin-top: 8px;
+  }
+
+  &:hover {
+    box-shadow: #546e95 0px 0px 30px 5px;
+  }
+
+}

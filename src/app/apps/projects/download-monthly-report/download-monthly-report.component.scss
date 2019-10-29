@@ -1,0 +1,16 @@
+.af-page-content {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  .content {
+    width: 80%;
+    height: 60%;
+  }
+
+  .button-group {
+    padding-top: 20px;
+    display: flex;
+    justify-content: space-between;
+  }
+}

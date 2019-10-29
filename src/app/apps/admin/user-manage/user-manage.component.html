@@ -1,0 +1,115 @@
+<div class="af-page-content">
+
+  <div class="input-group">
+    <input type="text" class="form-control" [(ngModel)]="inputQuery" placeholder="输入查询条件">
+    <div class="input-group-append">
+      <button class="btn btn-outline-secondary" type="button" (click)="queryUser()">
+        <span class="fas fa-search"></span>
+        查询
+      </button>
+    </div>
+    <div *ngIf="isAdmin" class="input-group-append">
+      <button class="btn btn-outline-secondary btn-primary" (click)="addNewUser()" type="button">
+        <span class="fas fa-plus"></span>
+        添加用户
+      </button>
+    </div>
+  </div>
+
+  <div *ngIf="isCreating || isUpdating" class="operation-container">
+    <div class="card text-center">
+      <div class="card-header text-left">
+        <h5 *ngIf="isCreating">新增用户</h5>
+        <h5 *else> 修改用户</h5>
+      </div>
+      <div class="card-body">
+        <div class="operate-area-container">
+          <div class="op-column-item">
+            <label>
+              用户账号 <span class="text-danger">*</span>
+            </label>
+            <div>
+              <input type="text" [readonly]="isUpdating" [(ngModel)]="opUserInfo.user_id" class="form-control"
+                placeholder="请输入用户账号">
+            </div>
+          </div>
+          <div class="op-column-item">
+            <label>
+              用户名 <span class="text-danger">*</span>
+            </label>
+            <div>
+              <input type="text" [(ngModel)]="opUserInfo.user_name" class="form-control" placeholder="请输入用户账号">
+            </div>
+          </div>
+          <div class="op-column-item">
+            <label>
+              是否管理员 <span class="text-danger">*</span>
+            </label>
+            <div>
+              <select [(ngModel)]="opUserInfo.is_admin" class="custom-select">
+                <option value="Y">是</option>
+                <option value="N">否</option>
+              </select>
+            </div>
+          </div>
+        </div>
+        <div *ngIf="isCreating" class="text-left">
+          <span class="text-danger">*</span>备注：新建用户后，系统会自动给予默认的密码 123456。请通知相关用户及时修改密码。
+        </div>
+      </div>
+      <div class="card-footer text-right">
+        <div class="text-danger">
+          {{errorMessage}}
+        </div>
+        <div>
+          <button type="button" class="btn btn-info" [disabled]="!opUserInfo.user_id || !opUserInfo.user_name || !opUserInfo.is_admin"
+            (click)="saveUser()">
+            <span class="fas fa-check"></span>
+            保存
+          </button>
+          <button type="button" class="btn btn-secondary" (click)="cancel()">
+            <span class="fas fa-times"></span>
+            取消
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="isShowing" [hidden]="isCreating || isUpdating" class="table-container">
+    <table class="common-table">
+      <thead>
+        <tr>
+          <th style="min-width: 150px;">账号</th>
+          <th style="min-width: 150px;">用户名</th>
+          <th style="min-width: 100px;">是否管理员</th>
+          <th style="width: 160px;">创建时间</th>
+          <th style="width: 120px;">创建者</th>
+          <th style="width: 160px;">修改时间</th>
+          <th style="width: 120px;">修改者</th>
+          <th *ngIf="isAdmin" style="width:75px;">操作</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let userInfo of lstDisplayUserInfo">
+          <td>{{userInfo.user_id}}</td>
+          <td>{{userInfo.user_name}}</td>
+          <td>{{userInfo.is_admin}}</td>
+          <td>{{userInfo.create_date_time}}</td>
+          <td>{{userInfo.created_by}}</td>
+          <td>{{userInfo.update_date_time}}</td>
+          <td>{{userInfo.updated_by}}</td>
+          <td *ngIf="isAdmin">
+            <div class="operation-td">
+              <span class="fas fa-edit text-info" title="修改" (click)="updateUser(userInfo)"></span>
+              <span class="fas fa-times text-danger" title="删除" (click)="deleteUser(userInfo)"></span>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <div>
+        <app-pagination [itemsPerPage]="pagingObj.itemsPerPage" [totalItems]="pagingObj.totalItems" [(currentPageIndex)]="pagingObj.currentPageIndex" (pageChange)="pagingObj.onPageChange($event)"></app-pagination>
+    </div>
+  </div>
+</div>

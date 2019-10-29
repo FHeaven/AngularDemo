@@ -1,0 +1,22 @@
+<div *ngIf="totalItems && itemsPerPage" class="div-inline-block" style="margin-top: 15px;">
+  <button type="button" class="btn btn-sm btn-outline-secondary" [disabled]="thisCurrentPageIndex===1" (click)="onPrevClick()">
+    上一页
+  </button>
+  <span>
+    当前是
+  </span>
+  <div class="div-inline-block">
+    <input class="form-control input-paging" type="text" [(ngModel)]="thisCurrentPageIndex" autocomplete="off"
+      (keyup.enter)="onInputEnter()" (blur)="onInputBlur()">
+    <span>
+      页
+    </span>
+    <button type="button" class="btn btn-sm btn-outline-secondary" [disabled]="isDisableNextButton()" (click)="onNextClick()">
+      下一页
+    </button>
+    <span>
+      | 共 <span class="num-text">{{totalItems}}</span> 笔记录
+      | 每页 <span class="num-text">{{itemsPerPage}}</span> 笔记录
+      | 共 <span class="num-text">{{ totalItems/itemsPerPage | avCeil}}</span> 页
+    </span>
+  </div>

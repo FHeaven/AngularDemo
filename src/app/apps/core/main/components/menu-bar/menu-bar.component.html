@@ -1,0 +1,37 @@
+<div class="af-menu-bar">
+  <div class="af-menu-bar-container">
+    <ul>
+      <li class="star-list">
+        <app-score-star [score]="10" [fontSize]="23"></app-score-star>
+      </li>
+      <li *ngFor="let mainMenuItem of menuList" class="side-bar-node-item">
+        <a (click)="toogleSubMenuItems(mainMenuItem)">
+          <div class="node-icon">
+            <span><i [ngClass]="mainMenuItem.icons"></i></span>
+          </div>
+          <div class="node-text" title="{{mainMenuItem.menuName}}">
+            {{mainMenuItem.menuName}}
+          </div>
+        </a>
+        <ng-template [ngTemplateOutlet]="subMenuTemplate" [ngOutletContext]="{thisMenuItem: mainMenuItem}"></ng-template>
+      </li>
+    </ul>
+  </div>
+
+  <ng-template #subMenuTemplate let-thisMenuItem="thisMenuItem">
+    <ul *ngIf="thisMenuItem.subMenuList.length > 0" [@toogleMenu]="thisMenuItem.showSubMenuItems" class="sub-level"
+      style="padding-left: 8px;">
+      <li *ngFor="let subMenuItem of thisMenuItem.subMenuList" class="side-bar-node-item">
+        <a (click)="toogleSubMenuItems(subMenuItem)">
+          <div class="node-icon">
+            <span><i [ngClass]="subMenuItem.icons"></i></span>
+          </div>
+          <div class="node-text" title="{{subMenuItem.menuName}}">
+            {{subMenuItem.menuName}}
+          </div>
+        </a>
+        <ng-template [ngTemplateOutlet]="subMenuTemplate" [ngOutletContext]="{thisMenuItem: subMenuItem}"></ng-template>
+      </li>
+    </ul>
+  </ng-template>
+</div>

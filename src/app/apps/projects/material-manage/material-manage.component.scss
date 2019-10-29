@@ -1,0 +1,43 @@
+.af-page-content {
+  .operate-area-container {
+    margin: 20px 10px;
+    display: flex;
+    display: -webkit-flex;
+    justify-content: space-between;
+
+    .error-unit-price {
+      box-shadow: 0 0 8px #e25f42;
+      border-color: #e25f42;
+    }
+
+    .op-column-item {
+      width: 20%;
+      text-align: left;
+
+      .label {
+        font-weight: 500;
+      }
+    }
+  }
+
+  .card-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .operation-td {
+    display: flex;
+    justify-content: center;
+
+    span {
+      cursor: pointer;
+      font-size: 18px;
+    }
+  }
+
+  .fa-edit {
+    margin-right: 10px;
+  }
+
+}

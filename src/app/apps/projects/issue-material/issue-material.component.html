@@ -1,0 +1,198 @@
+<div class="af-page-content">
+  <div [class.hidden]="!showFirstPage">
+    <div class="card">
+      <div class="card-header text-left">
+        <h5 style="font-size: 17px;">
+          查询条件
+        </h5>
+      </div>
+      <div class="card-body">
+        <div style="width: 100%;display:flex;align-items: center;">
+          <div class="query-item radio-group">
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="N"
+                [(ngModel)]="queryObj.isCompleted" (ngModelChange)="onChangeCompleted('N')">
+              <label class="form-check-label text-danger" for="inlineRadio1">未结案</label>
+            </div>
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="Y"
+                [(ngModel)]="queryObj.isCompleted" (ngModelChange)="onChangeCompleted('Y')">
+              <label class="form-check-label text-success" for="inlineRadio2">已结案</label>
+            </div>
+          </div>
+          <div class="query-item">
+            <label style="margin-bottom: 0px; width: 80px;">
+              申请人
+            </label>
+            <div class="dropdown">
+              <app-av-typeahead [compConfig]="queryObj.applierConfig"></app-av-typeahead>
+            </div>
+          </div>
+          <div class="query-item">
+            <label style="margin-bottom: 0px; width: 80px;">
+              申请单号
+            </label>
+            <div class="dropdown">
+              <app-av-typeahead [compConfig]="queryObj.applyIdConfig"></app-av-typeahead>
+            </div>
+          </div>
+          <div>
+            <button type="button" class="btn btn-info" (click)="onSearchApplyHd()">
+              <span class="fas fa-search"></span>
+              查询
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div *ngIf="showTable" style="margin-top:15px;">
+      <div class="table-container" style="overflow-x: auto;">
+        <table class="common-table">
+          <thead>
+            <tr>
+              <th style="min-width: 100px;">申请单号</th>
+              <th style="min-width: 90px;">申请人</th>
+              <th style="min-width: 80px;">申请项目数量</th>
+              <th style="min-width: 90px;">未完成项目数量</th>
+              <th style="min-width: 90px;">状态</th>
+              <th style="min-width: 160px;">申请时间</th>
+              <th style="min-width: 50px;">操作</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let item of lstDisplayApplyHd;">
+              <td>{{item.apply_id}}</td>
+              <td>{{item.applier}}</td>
+              <td class="text-right">{{item.apply_item_count|avNumberString}}</td>
+              <td class="text-right">{{item.to_issue_item_count|avNumberString}}</td>
+              <td *ngIf="item.status==='N'" class="text-danger">未结案</td>
+              <td *ngIf="item.status==='Y'" class="text-success">已结案</td>
+              <td>{{item.apply_date}}</td>
+              <td class="issue-material-button text-center">
+                <button *ngIf="queryObj.isCompletedStatus === 'N'" type="button" class="btn btn-success btn-sm"
+                  (click)="gotoIssueMaterial(item)" title="点击进入发料画面">发料</button>
+                <ng-container *ngIf="queryObj.isCompletedStatus === 'Y'">
+                  <button type="button" class="btn btn-secondary btn-sm" (click)="gotoIssueMaterial(item)">查看</button>
+                  <button type="button" class="btn btn-secondary btn-sm"
+                    (click)="onDowloadStoreOut(item.apply_id)">下载出仓单</button>
+                </ng-container>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div>
+        <app-pagination [itemsPerPage]="pagingObj.itemsPerPage" [totalItems]="pagingObj.totalItems"
+          [(currentPageIndex)]="pagingObj.currentPageIndex" (pageChange)="pagingObj.onPageChange($event)">
+        </app-pagination>
+      </div>
+    </div>
+  </div>
+  <div *ngIf="!showFirstPage">
+    <div class="card">
+      <div class="card-header text-left" style="display:flex;align-items:center;">
+        <h5 style="font-size: 17px;width:100px">
+          发料
+        </h5>
+        <h5 style="font-size: 13px;width:100%;text-align:right;">
+          申请单号：{{issuingItem.apply_id}} &nbsp;&nbsp;
+          申请人：{{issuingItem.applier}} &nbsp;&nbsp;
+          申请时间：{{issuingItem.apply_date}}
+        </h5>
+      </div>
+      <div class="card-body">
+        <div class="text-left" style="margin-bottom: 15px;">
+          <ng-container *ngIf="!isHideIssueOpButtons()">
+            <button type="button" class="btn btn-info" (click)="onSaveIssueMaterial()"
+              [disabled]="isDisableSaveIssueButton()">
+              <span class="fas fa-save"></span>
+              保存发料信息
+            </button>
+            <button type="button" class="btn btn-info" (click)="gotoIssueMaterial(issuingItem)">
+              <span class="fas fa-sync"></span>
+              刷新
+            </button>
+          </ng-container>
+          <ng-container *ngIf="isHideIssueOpButtons()">
+            <button type="button" class="btn btn-info" (click)="onDowloadStoreOut(issuingItem.apply_id)">
+              <span class="fas fa-file-download"></span>
+              下载出仓单
+            </button>
+          </ng-container>
+          <button type="button" class="btn btn-secondary" (click)="goBack()">
+            <span class="fas fa-chevron-circle-left"></span>
+            返回
+          </button>
+        </div>
+        <div *ngIf="lstLackStockMaterial?.length>0" style="margin-bottom: 15px;">
+          <div class="text-danger">
+            保存失败：存在库存不足的物料，高亮部分是库存不足的申请。点击“刷新”，可查看最新库存。
+          </div>
+        </div>
+        <div style="width: 100%;overflow-x: scroll;">
+          <table class="common-table">
+            <thead>
+              <tr>
+                <th style="min-width: 50px;">序号</th>
+                <th style="min-width: 80px;">可结案</th>
+                <th style="min-width: 100px;">物料编号</th>
+                <th style="min-width: 140px;">物料名称</th>
+                <th style="min-width: 65px;">单位</th>
+                <th style="min-width: 100px;">单价（元）</th>
+                <th style="min-width: 100px;">申请量</th>
+                <th style="min-width: 100px;">库存量</th>
+                <th style="min-width: 100px;">已发量</th>
+                <th style="min-width: 100px;" [class.maintain-title]="queryObj.isCompletedStatus !== 'Y'">
+                  实发量
+                  <span *ngIf="queryObj.isCompletedStatus !== 'Y'" class="text-danger">&nbsp;*</span>
+                </th>
+                <th style="min-width: 100px;">溢发量</th>
+                <th style="min-width: 100px;" [class.maintain-title]="queryObj.isCompletedStatus !== 'Y'">
+                  发料备注
+                  <span *ngIf="queryObj.isCompletedStatus !== 'Y'" class="text-danger">&nbsp;*</span></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let item of lstIssuingItem;let tmpIndex = index;">
+                <td>{{tmpIndex+1}}</td>
+                <td class="text-center">
+                  <div *ngIf="item.status!=='Y'" class="form-check form-check-inline" style="margin-right:0">
+                    <input class="form-check-input" style="margin-right:0" type="checkbox" [(ngModel)]="item.isChecked">
+                  </div>
+                  <div *ngIf="item.status==='Y'">
+                    <span class="fas fa-check text-success"></span>
+                  </div>
+                </td>
+                <td [class.highlight-material]="lstLackStockMaterial?.includes(item.material_id)">{{item.material_id}}
+                </td>
+                <td>{{item.material}}</td>
+                <td>{{item.unit}}</td>
+                <td class="text-right">{{item.unit_price|avNumberString}}</td>
+                <td class="text-right">{{item.apply_qty|avNumberString}}</td>
+                <td class="text-right">{{item.stock_qty|avNumberString}}</td>
+                <td class="text-right">{{item.issued_qty|avNumberString}}</td>
+                <td *ngIf="item.status!=='Y'" style="padding:0;width:110px;">
+                  <input type="text" class="form-control" style="width: 100%; border: 1px;"
+                    [(ngModel)]="item.issuing_qty" [class.highlight]="item.stock_qty<item.issuing_qty"
+                    placeholder="请输入实发量" (blur)="onInQtyChanged(item)">
+                </td>
+                <td *ngIf="item.status ==='Y'" class="text-right">{{item.issuing_qty|avNumberString}}</td>
+                <td class="text-right" [class.text-danger]="item.spill_qty>0">{{item.spill_qty|avNumberString}}</td>
+                <td *ngIf="item.status !=='Y'" style="padding:0">
+                  <input type="text" class="form-control" style="width: 100%;border: 1px;"
+                    [(ngModel)]="item.issue_remark" placeholder="请输入申请备注">
+                </td>
+                <td *ngIf="item.status ==='Y'">
+                  {{item.issue_remark}}
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+  <a class="downloadReportUrl" [attr.href]="downloadUrl" target="_self">
+    <span id="downloadReport"></span>
+  </a>
+</div>

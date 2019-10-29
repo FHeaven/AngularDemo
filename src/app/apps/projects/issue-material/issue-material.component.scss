@@ -1,0 +1,78 @@
+.af-page-content {
+
+  .hidden {
+    display: none;
+  }
+
+  .table-container {
+    margin-top: 0px;
+  }
+
+  .operate-area-container {
+    margin: 20px 10px;
+    display: flex;
+    display: -webkit-flex;
+    justify-content: space-between;
+
+    .op-column-item {
+      width: 28%;
+      text-align: left;
+
+      .label {
+        font-weight: 500;
+      }
+    }
+  }
+
+  .operation-td {
+    display: flex;
+    justify-content: center;
+
+    span {
+      cursor: pointer;
+      font-size: 18px;
+    }
+  }
+
+  .fa-times {
+    margin-left: 10px;
+  }
+
+  .query-item {
+    display: flex;
+    align-items: center;
+    margin-right: 20px;
+    width: 280px;
+
+    &.radio-group {
+      width: 180px;
+
+      .form-check-inline {
+        width: 90px;
+
+        input,
+        label {
+          cursor: pointer;
+        }
+      }
+    }
+
+    .dropdown {
+      width: 200px;
+    }
+  }
+
+  .issue-material-button .btn-sm {
+    padding: 1px 2px;
+  }
+
+  .highlight {
+    background-color: #d8e4b2;
+    color: red;
+  }
+
+  .highlight-material {
+    background-color: red;
+  }
+
+}

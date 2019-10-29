@@ -1,0 +1,214 @@
+<div class="af-page-content">
+  <div class="btn-group">
+    <ng-container *ngFor="let category of lstDisplayCategory">
+      <button type="button" class="btn" [class.btn-outline-primary]="category.value!==displayCategory.value"
+        [class.btn-primary]="category.value==displayCategory.value" (click)="onSelectCategory(category)">
+        <span class="fas" [ngClass]="category.iconClass"></span>
+        {{category.description}}
+      </button>
+    </ng-container>
+  </div>
+  <div style="margin-top: 20px;">
+
+    <div *ngIf="displayCategory.value===1">
+      <div class="card">
+        <div class="card-body store-in-info-body">
+          <div class="input-group">
+            <input type="text" class="form-control" [(ngModel)]="storeStatusFilterString" placeholder="输入查询条件">
+            <div class="input-group-append">
+              <button class="btn btn-outline-secondary" type="button" (click)="filterStoreStatus()">
+                <span class="fas fa-search"></span>
+                查询
+              </button>
+            </div>
+          </div>
+          <div class="table-container" style="width:100%;">
+            <table class="common-table">
+              <thead>
+                <tr>
+                  <th style="min-width: 80px;">物料编号</th>
+                  <th style="min-width: 120px;">物料名称</th>
+                  <th style="min-width: 80px;">库存单位</th>
+                  <th style="min-width: 90px;">单价（元）</th>
+                  <th style="min-width: 90px;">总入库数量</th>
+                  <th style="min-width: 90px;">总使用数量</th>
+                  <th style="min-width: 90px;">现存用数量</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let storeInItem of lstDisplayStoreStatus">
+                  <td>{{storeInItem.material_id}}</td>
+                  <td>{{storeInItem.material}}</td>
+                  <td>{{storeInItem.unit}}</td>
+                  <td>{{storeInItem.unit_price | avNumberString}}</td>
+                  <td style="text-align: right;">{{storeInItem.total_in_qty | avNumberString}}</td>
+                  <td style="text-align: right;">{{storeInItem.total_used_qty | avNumberString}}</td>
+                  <td style="text-align: right;">{{storeInItem.total_rest_qty | avNumberString}}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div>
+            <app-pagination [itemsPerPage]="pagingStoreStatusObj.itemsPerPage"
+              [totalItems]="pagingStoreStatusObj.totalItems"
+              [(currentPageIndex)]="pagingStoreStatusObj.currentPageIndex"
+              (pageChange)="pagingStoreStatusObj.onPageChange($event)"></app-pagination>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div *ngIf="displayCategory.value===2">
+      <div class="card">
+        <div class="card-body store-in-info-body">
+          <div class="input-group">
+            <input type="text" class="form-control" [(ngModel)]="storeInFilterString" placeholder="输入查询条件">
+            <div class="input-group-append">
+              <button class="btn btn-outline-secondary" type="button" (click)="filterStoreIn()">
+                <span class="fas fa-search"></span>
+                查询
+              </button>
+            </div>
+          </div>
+          <div style="width:100%;">
+            <div class="table-container" style="overflow-x: auto;">
+              <table class="common-table">
+                <thead>
+                  <tr>
+                    <th style="min-width: 100px;">入库编号</th>
+                    <th style="min-width: 50px;">序号</th>
+                    <th style="min-width: 100px;">供应商</th>
+                    <th style="min-width: 100px;">物料编号</th>
+                    <th style="min-width: 140px;">物料名称</th>
+                    <th style="min-width: 50px;">单位</th>
+                    <th style="min-width: 100px;">单价（元）</th>
+                    <th style="min-width: 100px;">入库数量</th>
+                    <th style="min-width: 100px;">已用数量</th>
+                    <th style="min-width: 100px;">现存数量</th>
+                    <th style="min-width: 160px;">入库时间</th>
+                    <th style="min-width: 90px;">操作者</th>
+                    <th style="min-width: 60px;">操作</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let storeInItem of lstDisplayStoreIn">
+                    <td>{{storeInItem.in_id}}</td>
+                    <td>{{storeInItem.sequence}}</td>
+                    <td>{{storeInItem.vendor_name}}</td>
+                    <td>{{storeInItem.material_id}}</td>
+                    <td>{{storeInItem.material}}</td>
+                    <td>{{storeInItem.unit}}</td>
+                    <td style="text-align: right;">{{storeInItem.unit_price | avNumberString}}</td>
+                    <td style="text-align: right;">{{storeInItem.in_qty | avNumberString}}</td>
+                    <td style="text-align: right;">{{storeInItem.used_qty | avNumberString}}</td>
+                    <td style="text-align: right;">{{storeInItem.rest_qty | avNumberString}}</td>
+                    <td>{{storeInItem.create_date_time}}</td>
+                    <td>{{storeInItem.created_by}}</td>
+                    <td>
+                      <div class="operation-td">
+                        <span *ngIf="storeInItem.used_qty === 0" class="fas fa-times text-danger" style="margin-left:0;"
+                          title="删除" (click)="deleteOneStoreIn(storeInItem)"></span>
+                      </div>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div>
+              <app-pagination [itemsPerPage]="pagingStoreInObj.itemsPerPage" [totalItems]="pagingStoreInObj.totalItems"
+                [(currentPageIndex)]="pagingStoreInObj.currentPageIndex"
+                (pageChange)="pagingStoreInObj.onPageChange($event)"></app-pagination>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div *ngIf="displayCategory.value===3">
+      <div class="card">
+        <div class="card-header text-left">
+          <h5 style="font-size: 17px;">
+            {{displayCategory.description}} - 入库编号：{{lstNewStoreIn[0].in_id}}
+          </h5>
+        </div>
+        <div class="card-body">
+          <div style="width: 250px;margin-bottom: 10px;display:flex;align-items: center;">
+            <label style="margin-bottom: 0px; width: 80px;">
+              供应商 <span class="text-danger">&nbsp;*</span>
+            </label>
+            <div>
+              <input type="text" [(ngModel)]="vendorName" class="form-control" placeholder="请输入供应商">
+            </div>
+          </div>
+          <div class="table-container">
+            <table class="common-table">
+              <thead>
+                <tr>
+                  <th style="width: 75px;">序号</th>
+                  <th style="min-width: 300px;" class="maintain-title">物料编号<span class="text-danger">&nbsp;*</span></th>
+                  <th style="min-width: 100px;">物料名称</th>
+                  <th style="min-width: 100px;">库存单位</th>
+                  <th style="min-width: 100px;">单价（元）</th>
+                  <th style="min-width: 100px;" class="maintain-title">入库数量<span class="text-danger">&nbsp;*</span></th>
+                  <th style="width:75px;text-align:center;">操作</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let item of lstNewStoreIn;let iRow = index;">
+                  <td style="text-align: center;">{{iRow+1}}</td>
+                  <td style="padding: 0;">
+                    <app-av-typeahead [compConfig]="item.typeaheadCompConfig"></app-av-typeahead>
+                  </td>
+                  <td>{{item.material}}</td>
+                  <td>{{item.unit}}</td>
+                  <td>{{item.unit_price | avNumberString}}</td>
+                  <td style="padding:0">
+                    <input type="text" class="form-control" style="width: 100%;
+                        border: 1px;" [(ngModel)]="item.in_qty" placeholder="请输入入库数量"
+                      [class.error-input]="item.isErrorInQty">
+                  </td>
+                  <td>
+                    <div class="operation-td">
+                      <span class="fas fa-plus text-info" title="添加" (click)="newMaterialRow(iRow)"></span>
+                      <span *ngIf="lstNewStoreIn.length>1" class="fas fa-times text-danger" title="删除"
+                        (click)="removeMaterialRow(iRow)"></span>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div class="card-footer text-right">
+          <div class="text-danger">
+            {{errorMessage}}
+          </div>
+          <div>
+            <button type="button" class="btn btn-info" [disabled]="isDisabledSaveStoreIn()"
+              (click)="onSaveNewStoreIn()">
+              <span class="fas fa-check"></span>
+              保存
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div *ngIf="displayCategory.value===4">
+      <div class="card">
+        <div class="card-body store-in-info-body">
+          <div class="input-group">
+            <input type="text" class="form-control" [(ngModel)]="inputStoreInId" placeholder="输入要下载的单号">
+            <div class="input-group-append">
+              <button class="btn btn-outline-info" type="button" (click)="downloadStoreInInfo()">
+                <span class="fas fa-file-download"></span>
+                下载
+              </button>
+            </div>
+
+            <a class="downloadReportUrl" [attr.href]="downloadUrl" target="_self">
+              <span id="downloadReport"></span>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

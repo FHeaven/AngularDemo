@@ -1,0 +1,94 @@
+@import '~app.config.scss';
+
+$hover-bg-color: rgb(42, 45, 46);
+
+.af-menu-bar {
+  height: 100%;
+  background-color: $ag-primary;
+  color: $ag-side-color;
+  font-size: 16px;
+  position: relative;
+  width: 230px;
+  overflow: hidden;
+
+
+  .af-menu-bar-container {
+    left: 0;
+    height: 100%;
+    position: absolute;
+    background-color: #0a2e49;
+    top: 0;
+    bottom: 0;
+    border-right: 1.5px solid darkgrey;
+    right: -20px;
+    height: auto;
+    width: 230px;
+    overflow-y: auto;
+
+    ul {
+      .star-list {
+        padding-top: 50px;
+        padding-bottom: 80px;
+        text-align: center;
+        display: flex;
+        justify-content: center;
+      }
+    }
+
+    .side-bar-node-item:first-child {
+      border-top: 1px solid #FFFFFF;
+    }
+
+    .side-bar-node-item {
+      width: 100%;
+      white-space: nowrap;
+      cursor: pointer;
+      padding: 0px;
+      position: relative;
+      display: block;
+      line-height: 2.2;
+      border-bottom: 1px solid #FFFFFF;
+      font-size: 20px;
+
+
+
+      a {
+        margin-right: 1px;
+        display: flex;
+        display: -webkit-flex;
+        padding-left: 10px;
+
+        &:hover,
+        &:active {
+          background-color: $ag-blue;
+        }
+      }
+
+      .node-icon {
+        margin-right: 15px;
+        margin-left: 15px;
+        width: 30px;
+        display: flex;
+        display: -webkit-flex;
+        justify-content: center;
+      }
+
+      .node-text {
+        display: inline-block;
+        cursor: pointer;
+      }
+    }
+  }
+
+  ul {
+    line-height: 28px;
+    font-weight: 400;
+    padding: 0px 0px 0px 0px;
+    margin: 4px 0px 4px 0px;
+    list-style: none;
+
+    &.sub-level {
+      overflow: hidden;
+    }
+  }
+}

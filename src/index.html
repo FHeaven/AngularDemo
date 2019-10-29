@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>Dream</title>
+  <base href="/">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" type="image/x-icon" href="favicon.ico">
+  <script>
+    window.DREAM_BASE_CONFIG = {};
+
+    DREAM_BASE_CONFIG = {
+      TOMCAT_ADDRESS: 'http://localhost:8080/',
+      SERVER_ADDRESS: 'http://localhost:8080/RepositoryWebService/',
+      LOGIN_URL: 'Admin/login',
+      GET_LOGIN_DATA_URL: 'Admin/getLoginData'
+    };
+  </script>
+  <script src="assets/layer/jquery.min.js"></script>
+  <script src="assets/layer/layer.js"></script>
+
+</head>
+
+<body>
+  <app-root></app-root>
+</body>
+
+</html>

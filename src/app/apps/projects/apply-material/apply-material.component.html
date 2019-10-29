@@ -1,0 +1,277 @@
+<div class="af-page-content">
+  <div class="btn-group">
+    <ng-container *ngFor="let category of lstDisplayCategory">
+      <button type="button" class="btn" [class.btn-outline-primary]="category.value!==displayCategory.value"
+        [class.btn-primary]="category.value==displayCategory.value" (click)="onSelectCategory(category)">
+        <span class="fas" [ngClass]="category.iconClass"></span>
+        {{category.description}}
+      </button>
+    </ng-container>
+  </div>
+  <div style="margin-top: 20px;">
+
+    <div *ngIf="displayCategory.value===1">
+      <div class="card">
+        <div class="card-header text-left">
+          <h5 style="font-size: 17px;">
+            {{displayCategory.description}}查询
+          </h5>
+        </div>
+        <div class="card-body">
+          <div *ngIf="lstTodoApplies.length > 0"
+            style="width: 100%;margin-bottom: 10px;display:flex;align-items: center;">
+            <div class="query-item">
+              <label style="margin-bottom: 0px; width: 80px;">
+                申请人 <span class="text-danger">*</span>
+              </label>
+              <div>
+                <app-av-typeahead [compConfig]="queryObj.applierConfig"></app-av-typeahead>
+              </div>
+            </div>
+            <div class="query-item">
+              <label style="margin-bottom: 0px; width: 80px;">
+                申请单号 <span class="text-danger">*</span>
+              </label>
+              <div>
+                <app-av-typeahead [compConfig]="queryObj.applyIdConfig"></app-av-typeahead>
+              </div>
+            </div>
+            <div>
+              <button type="button" class="btn btn-info" [disabled]="!queryObj.applier || !queryObj.apply_id"
+                (click)="onSearchSupplyMaterial()">
+                <span class="fas fa-search"></span>
+                查询
+              </button>
+            </div>
+          </div>
+          <div *ngIf="lstTodoApplies.length === 0" class="alert alert-danger" role="alert">
+            <span style="font-size: 16px;" class="fas fa-exclamation-triangle">&nbsp;&nbsp;没有未结案的申请记录！</span>
+          </div>
+          <div [hidden]="queryObj.isBeforeQuery" class="table-container" style="overflow-x: auto;">
+            <table class="common-table">
+              <thead>
+                <tr>
+                  <th style="min-width: 100px;">申请单号</th>
+                  <th style="min-width: 50px;">序号</th>
+                  <th style="min-width: 100px;">物料编号</th>
+                  <th style="min-width: 140px;">物料名称</th>
+                  <th style="min-width: 65px;">单位</th>
+                  <th style="min-width: 100px;">单价（元）</th>
+                  <th style="min-width: 100px;">申请量</th>
+                  <th style="min-width: 100px;">实发量</th>
+                  <th style="min-width: 100px;">溢发量</th>
+                  <th style="min-width: 80px;">状态</th>
+                  <th style="min-width: 100px;">申请人</th>
+                  <th style="min-width: 160px;">申请时间</th>
+                  <th style="min-width: 100px;">申请备注</th>
+                  <th style="min-width: 100px;">填单人</th>
+                  <th style="min-width: 100px;">发料人</th>
+                  <th style="min-width: 160px;">发料时间</th>
+                  <th style="min-width: 100px;">发料备注</th>
+                  <th style="min-width: 70px;">操作</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let item of lstDisplay; let tmpIndex = index;">
+                  <td>{{item.apply_id}}</td>
+                  <td>{{tmpIndex+1}}</td>
+                  <td>{{item.material_id}}</td>
+                  <td>{{item.material}}</td>
+                  <td>{{item.unit}}</td>
+                  <td style="text-align: right;">{{item.unit_price | avNumberString}}</td>
+                  <td style="text-align: right;">{{item.apply_qty | avNumberString}}</td>
+                  <td style="text-align: right;">{{item.issued_qty | avNumberString}}</td>
+                  <td style="text-align: right;">{{item.spill_qty | avNumberString}}</td>
+                  <td *ngIf="item.status === 'N'" style="color:red;">未完成</td>
+                  <td *ngIf="item.status === 'Y'">已完成</td>
+                  <td>{{item.applier}}</td>
+                  <td>{{item.apply_date}}</td>
+                  <td class="hidden-over-text">{{item.apply_remark}}</td>
+                  <td>{{item.apply_operator}}</td>
+                  <td>{{item.issue_operator}}</td>
+                  <td>{{item.issue_date}}</td>
+                  <td class="hidden-over-text">{{item.issue_remark}}</td>
+                  <td>
+                    <div class="operation-td">
+                      <span *ngIf="item.issued_qty === 0" class="fas fa-times text-danger" style="margin-left:0;"
+                        title="删除" (click)="deleteOneItem(item)"></span>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div *ngIf="displayCategory.value===2">
+      <div class="card">
+        <div class="card-header text-left">
+          <h5 style="font-size: 17px;">
+            {{displayCategory.description}}查询
+          </h5>
+        </div>
+        <div class="card-body">
+          <div *ngIf="lstDoneApplies.length > 0"
+            style="width: 100%;margin-bottom: 10px;display:flex;align-items: center;">
+            <div class="query-item">
+              <label style="margin-bottom: 0px; width: 80px;">
+                申请人 <span class="text-danger">*</span>
+              </label>
+              <div>
+                <app-av-typeahead [compConfig]="queryObj.applierConfig"></app-av-typeahead>
+              </div>
+            </div>
+            <div class="query-item">
+              <label style="margin-bottom: 0px; width: 80px;">
+                申请单号 <span class="text-danger">*</span>
+              </label>
+              <div>
+                <app-av-typeahead [compConfig]="queryObj.applyIdConfig"></app-av-typeahead>
+              </div>
+            </div>
+            <div>
+              <button type="button" class="btn btn-info" [disabled]="!queryObj.applier || !queryObj.apply_id"
+                (click)="onSearchSupplyMaterial()">
+                <span class="fas fa-search"></span>
+                查询
+              </button>
+            </div>
+            <div style="margin-left: 8px;">
+              <button type="button" class="btn btn-info" [disabled]="!queryObj.applier || !queryObj.apply_id"
+                (click)="onDownload()">
+                <span class="fas fa-file-download"></span>
+                下载出仓单
+              </button>
+            </div>
+          </div>
+          <div *ngIf="lstDoneApplies.length === 0" class="alert alert-danger" role="alert">
+            <span style="font-size: 16px;" class="fas fa-exclamation-triangle">&nbsp;&nbsp;没有已结案的申请记录！</span>
+          </div>
+          <div [hidden]="queryObj.isBeforeQuery" class="table-container" style="overflow-x: auto;">
+            <table class="common-table">
+              <thead>
+                <tr>
+                  <th style="min-width: 100px;">申请单号</th>
+                  <th style="min-width: 50px;">序号</th>
+                  <th style="min-width: 100px;">物料编号</th>
+                  <th style="min-width: 140px;">物料名称</th>
+                  <th style="min-width: 65px;">单位</th>
+                  <th style="min-width: 100px;">单价（元）</th>
+                  <th style="min-width: 100px;">申请量</th>
+                  <th style="min-width: 100px;">实发量</th>
+                  <th style="min-width: 100px;">溢发量</th>
+                  <th style="min-width: 80px;">状态</th>
+                  <th style="min-width: 100px;">申请人</th>
+                  <th style="min-width: 160px;">申请时间</th>
+                  <th style="min-width: 100px;">申请备注</th>
+                  <th style="min-width: 100px;">填单人</th>
+                  <th style="min-width: 100px;">发料人</th>
+                  <th style="min-width: 160px;">发料时间</th>
+                  <th style="min-width: 100px;">发料备注</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let item of lstDisplay; let tmpIndex = index;">
+                  <td>{{item.apply_id}}</td>
+                  <td>{{tmpIndex+1}}</td>
+                  <td>{{item.material_id}}</td>
+                  <td>{{item.material}}</td>
+                  <td>{{item.unit}}</td>
+                  <td style="text-align: right;">{{item.unit_price | avNumberString}}</td>
+                  <td style="text-align: right;">{{item.apply_qty | avNumberString}}</td>
+                  <td style="text-align: right;">{{item.issued_qty | avNumberString}}</td>
+                  <td style="text-align: right;">{{item.spill_qty | avNumberString}}</td>
+                  <td *ngIf="item.status === 'N'" style="color:red;">未完成</td>
+                  <td *ngIf="item.status === 'Y'">已完成</td>
+                  <td>{{item.applier}}</td>
+                  <td>{{item.apply_date}}</td>
+                  <td class="hidden-over-text">{{item.apply_remark}}</td>
+                  <td>{{item.apply_operator}}</td>
+                  <td>{{item.issue_operator}}</td>
+                  <td>{{item.issue_date}}</td>
+                  <td class="hidden-over-text">{{item.issue_remark}}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div *ngIf="displayCategory.value===3">
+      <div class="card">
+        <div class="card-header text-left">
+          <h5 style="font-size: 17px;">
+            {{displayCategory.description}} - 申请编号：{{lstNewItems[0].apply_id}}
+          </h5>
+        </div>
+        <div class="card-body">
+          <div style="width: 250px;margin-bottom: 10px;display:flex;align-items: center;">
+            <label style="margin-bottom: 0px; width: 80px;">
+              申请人 <span class="text-danger">*</span>
+            </label>
+            <div>
+              <input type="text" [(ngModel)]="applier" class="form-control" placeholder="请输入申请人">
+            </div>
+          </div>
+          <div class="table-container">
+            <table class="common-table">
+              <thead>
+                <tr>
+                  <th style="width: 75px;">序号</th>
+                  <th style="min-width: 300px;" class="maintain-title">物料编号<span class="text-danger">&nbsp;*</span></th>
+                  <th style="min-width: 100px;">物料名称</th>
+                  <th style="min-width: 120px;">库存单位</th>
+                  <th style="min-width: 120px;">单价（元）</th>
+                  <th style="min-width: 100px;" class="maintain-title">申请数量<span class="text-danger">&nbsp;*</span></th>
+                  <th style="min-width: 100px;">申请备注</th>
+                  <th style="width:75px;text-align:center;">操作</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let item of lstNewItems;let iRow = index;">
+                  <td style="text-align: center;">{{iRow+1}}</td>
+                  <td style="padding: 0;">
+                    <app-av-typeahead [compConfig]="item.typeaheadCompConfig"></app-av-typeahead>
+                  </td>
+                  <td>{{item.material}}</td>
+                  <td>{{item.unit}}</td>
+                  <td>{{item.unit_price | avNumberString}}</td>
+                  <td style="padding:0">
+                    <input type="text" class="form-control" style="width: 100%; border: 1px;"
+                      [(ngModel)]="item.apply_qty" placeholder="请输入申请数量" [class.error-input]="item.isErrorApplyQty">
+                  </td>
+                  <td style="padding:0">
+                    <input type="text" class="form-control" style="width: 100%;border: 1px;"
+                      [(ngModel)]="item.apply_remark" placeholder="请输入申请备注">
+                  </td>
+                  <td>
+                    <div class="operation-td">
+                      <span class="fas fa-plus text-info" title="添加" (click)="addNewRow(iRow)"></span>
+                      <span *ngIf="lstNewItems.length>1" class="fas fa-times text-danger" title="删除"
+                        (click)="removeRow(iRow)"></span>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div class="card-footer text-right">
+          <div class="text-danger">
+            {{errorMessage}}
+          </div>
+          <div>
+            <button type="button" class="btn btn-info" [disabled]="isDisabledSaveStoreIn()" (click)="onSaveNewApply()">
+              <span class="fas fa-check"></span>
+              保存
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <a class="downloadReportUrl" [attr.href]="downloadUrl" target="_self">
+    <span id="downloadReport"></span>
+  </a>
+</div>

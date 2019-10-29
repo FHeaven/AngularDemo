@@ -1,0 +1,30 @@
+<div class="af-main-page">
+  <div class="af-main-page-t">
+    <div class="af-main-page-tr">
+      <div class="af-sys-title">
+        <span class="fas fa-bars toogle-icon" (click)="toogleBar()" title="显示/隐藏菜单"></span>
+        <span class="fas fa-home home-icon" (click)="goHome()" title="首页"></span>
+        仓库管理系统
+      </div>
+      <div class="af-profile text-right">
+        <div style="margin-right: 40px; text-decoration: underline;display: inline;">
+          <span class="fas fa-map-marker-alt text-warning" (click)="toogleBar()"></span>
+          <span>{{getCurrentProgName()}}</span>
+        </div>
+        <div style="margin-right: 40px;display: inline;">
+          欢迎您，
+          <span>{{getUserName()}}</span>
+        </div>
+        <span class="fas fa-power-off logout-icon" (click)="logout()" title="退出系统"></span>
+      </div>
+    </div>
+  </div>
+  <div class="af-main-page-b">
+    <div class="af-left" [@toogleSideBar]="mainPageCtrl.sideBar">
+      <app-menu-bar [menuList]="menuList"></app-menu-bar>
+    </div>
+    <div class="af-right">
+      <router-outlet></router-outlet>
+    </div>
+  </div>
+</div>

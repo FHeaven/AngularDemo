@@ -1,0 +1,54 @@
+.af-page-content {
+
+  .table-container {
+    margin-top: 0px;
+  }
+
+  .operate-area-container {
+    margin: 20px 10px;
+    display: flex;
+    display: -webkit-flex;
+    justify-content: space-between;
+
+    .op-column-item {
+      width: 28%;
+      text-align: left;
+
+      .label {
+        font-weight: 500;
+      }
+    }
+  }
+
+  .operation-td {
+    display: flex;
+    justify-content: center;
+
+    span {
+      cursor: pointer;
+      font-size: 18px;
+    }
+  }
+
+  .fa-times {
+    margin-left: 10px;
+  }
+
+  .store-in-info-body {
+    .table-container {
+      margin-top: 15px;
+    }
+  }
+
+  .error-input {
+    box-shadow: 0 0 8px #e25f42;
+    border-color: #e25f42;
+  }
+
+  .card-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+}

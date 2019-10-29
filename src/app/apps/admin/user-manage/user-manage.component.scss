@@ -1,0 +1,32 @@
+.af-page-content {
+  .operate-area-container {
+    margin: 20px 10px;
+    display: flex;
+    display: -webkit-flex;
+    justify-content: space-between;
+
+    .op-column-item {
+      width: 28%;
+      text-align: left;
+
+      .label {
+        font-weight: 500;
+      }
+    }
+  }
+
+  .operation-td {
+    display: flex;
+    justify-content: center;
+
+    span {
+      cursor: pointer;
+      font-size: 18px;
+    }
+  }
+
+  .fa-edit {
+    margin-right: 10px;
+  }
+
+}

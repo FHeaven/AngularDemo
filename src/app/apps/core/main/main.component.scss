@@ -1,0 +1,81 @@
+@import '~app.config.scss';
+
+.af-main-page {
+  display: flex;
+  display: -webkit-flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+
+  .af-main-page-b {
+    display: flex;
+    display: -webkit-flex;
+    height: 100%;
+
+    .af-left {
+      width: 100%;
+      height: 100%;
+      position: relative;
+      display: flex;
+      display: -webkit-flex;
+      flex: 1;
+    }
+
+    .af-right {
+      width: 100%;
+      overflow: auto;
+    }
+  }
+
+  .af-main-page-t {
+    width: 100%;
+    height: 51px;
+    background: #546e95;
+    font-weight: 500;
+    padding: 0 20px;
+    display: flex;
+    align-items: center;
+    font-size: 15px;
+    flex-shrink: 0;
+    box-shadow: 0 0 35px 0 rgba(154, 161, 171, .15);
+    color: white;
+
+
+
+    .af-main-page-tr {
+      display: flex;
+      width: 100%;
+      font-size: 16px;
+      align-items: center;
+
+      .af-sys-title {
+        height: 100%;
+        width: 50%;
+        font-size: 20px;
+
+        .toogle-icon {
+          margin-right: 10px;
+          cursor: pointer;
+        }
+
+        .home-icon {
+          margin-right: 20px;
+          cursor: pointer;
+        }
+
+      }
+
+      .logout-icon {
+        cursor: pointer;
+        font-size: 20px;
+        color: #f9ffe3;
+      }
+
+      .af-profile {
+        height: 100%;
+        width: 50%;
+      }
+    }
+
+  }
+}
